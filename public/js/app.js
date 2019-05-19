@@ -61606,12 +61606,12 @@ if (token) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Form */ "./resources/js/components/Form.js");
+/* harmony import */ var _vegetables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vegetables */ "./resources/js/components/vegetables.js");
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./form */ "./resources/js/components/form.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61622,13 +61622,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -61640,30 +61641,117 @@ function (_Component) {
   _inherits(App, _Component);
 
   function App() {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this));
+    _this.state = {
+      vegs: [],
+      currentProduct: null
+    };
+    _this.handleAddProduct = _this.handleAddProduct.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(App, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch('/api/vegetables').then(function (response) {
+        return response.json();
+      }).then(function (vegs) {
+        _this2.setState({
+          vegs: vegs
+        });
+      });
+    }
+  }, {
+    key: "renderProducts",
+    value: function renderProducts() {
+      var _this3 = this;
+
+      var listStyle = {
+        listStyle: 'none',
+        fontSize: '18px',
+        lineHeight: '1.8em'
+      };
+      return this.state.vegs.map(function (vegs) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          style: listStyle,
+          onClick: function onClick() {
+            return _this3.handleClick(vegs);
+          },
+          key: vegs.id
+        }, vegs.vegetable_name);
+      });
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(vegs) {
+      this.setState({
+        currentProduct: vegs
+      });
+    }
+  }, {
+    key: "handleAddProduct",
+    value: function handleAddProduct(vegs) {
+      var _this4 = this;
+
+      vegs.price = Number(vegs.vegetable_price);
+      fetch('api/vegetables/', {
+        method: 'post',
+
+        /* headers are important*/
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(vegs)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        _this4.setState(function (prevState) {
+          return {
+            vegs: prevState.vegs.concat(data),
+            currentProduct: data
+          };
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Form__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+      var mainDivStyle = {
+        display: "flex",
+        flexDirection: "row"
+      };
+      var divStyle = {
+        justifyContent: "flex-start",
+        width: '35%',
+        background: '#f0f0f0',
+        padding: '20px 20px 20px 20px',
+        margin: '20px 8px 10px 20px'
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: mainDivStyle
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: divStyle
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " All Vegetables  "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.renderProducts()))));
     }
   }]);
 
   return App;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-
+/* harmony default export */ __webpack_exports__["default"] = (App);
 
 /***/ }),
 
-/***/ "./resources/js/components/Form.js":
+/***/ "./resources/js/components/form.js":
 /*!*****************************************!*\
-  !*** ./resources/js/components/Form.js ***!
+  !*** ./resources/js/components/form.js ***!
   \*****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -61674,6 +61762,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -61682,9 +61778,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -61697,16 +61793,65 @@ var Form =
 function (_Component) {
   _inherits(Form, _Component);
 
-  function Form() {
+  function Form(props) {
+    var _this;
+
     _classCallCheck(this, Form);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Form).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Form).call(this, props));
+    _this.state = {
+      newData: {
+        vegetable_name: '',
+        vegetable_price: '',
+        vegetable_description: '',
+        vegetable_supplier: '',
+        stock_available: false
+      }
+    };
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.handleInput = _this.handleInput.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(Form, [{
+    key: "handleInput",
+    value: function handleInput(key, e) {
+      var checkValue = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+      var state = Object.assign({}, this.state.newData);
+      state[key] = e.target.value;
+      state[key] = checkValue;
+      this.setState({
+        newData: state
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      axios.post('/api/vegetables', this.state.newData).then(function (response) {
+        console.log(response);
+
+        _this2.setState({
+          tasks: [response.data].concat(_toConsumableArray(_this2.state.newData))
+        });
+
+        _this2.setState({
+          newData: {}
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      var _this3 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-10"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: this.handleSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-3"
@@ -61715,10 +61860,13 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "vegetable"
       }, "Vegetable"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "text",
+        type: "vegetable_name",
         className: "form-control",
-        id: "vegetale_name",
-        placeholder: "Vegetable Name"
+        id: "vegetable_name",
+        placeholder: "Vegetable Name",
+        onChange: function onChange(e) {
+          return _this3.handleInput('vegetable_name', e);
+        }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-2"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -61726,10 +61874,13 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "vegetable_price"
       }, "Price"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "text",
+        type: "number",
         className: "form-control",
-        id: "vegetale_price",
-        placeholder: "Price"
+        id: "vegetable_price",
+        placeholder: "Price",
+        onChange: function onChange(e) {
+          return _this3.handleInput('vegetable_price', e);
+        }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -61739,8 +61890,11 @@ function (_Component) {
       }, "Description"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         className: "form-control",
-        id: "vegetale_description",
-        placeholder: "Description"
+        id: "vegetable_description",
+        placeholder: "Description",
+        onChange: function onChange(e) {
+          return _this3.handleInput('vegetable_description', e);
+        }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -61750,14 +61904,21 @@ function (_Component) {
       }, "Supplier Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         className: "form-control",
-        id: "vegetale_supplier",
-        placeholder: "Vegetable Supplier"
+        id: "vegetable_supplier",
+        placeholder: "Vegetable Supplier",
+        onChange: function onChange(e) {
+          return _this3.handleInput('vegetable_supplier', e);
+        }
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-check"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         className: "form-check-input",
         type: "checkbox",
-        id: "supplier_available"
+        id: "stock_available",
+        value: this.state.newData.stock_available.checked,
+        onChange: function onChange(e) {
+          return _this3.handleInput('stock_available', e);
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "form-check-label",
         htmlFor: "gridCheck"
@@ -61772,6 +61933,47 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (Form);
+
+/***/ }),
+
+/***/ "./resources/js/components/vegetables.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/vegetables.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/* Stateless component or pure component
+ * { product } syntax is the object destructing
+ */
+
+var Vegetable = function Vegetable(_ref) {
+  var vegs = _ref.vegs;
+  var divStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '65%',
+    margin: '30px 10px 10px 30px'
+  };
+
+  if (!vegs) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: divStyle
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "  No Selection "), " ");
+  } //Else, display the product data
+
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: divStyle
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, " ", vegs.vegetable_name, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, " ", vegs.vegetable_price, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " Status ", vegs.stock_available ? 'Available' : 'Out of stock', " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " Supplier : ", vegs.vegetable_supplier, " "));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Vegetable);
 
 /***/ }),
 
@@ -61819,8 +62021,8 @@ if (document.getElementById('root')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jayanthy/Code/VegList/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jayanthy/Code/VegList/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\vegstore\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\vegstore\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

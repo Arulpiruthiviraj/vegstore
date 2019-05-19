@@ -12,7 +12,15 @@ class App extends Component {
             currentProduct: null
         }
         this.handleAddProduct = this.handleAddProduct.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
+    handleDelete(id) {
+        const isNotId = vegs => vegs.id !== id;
+        const updatedVegs = this.state.vegs.filter(isNotId);
+        this.setState({ vegs: updatedVegs });
+        axios.delete(`/api/vegetables/${id}`);
+    }
+
     componentDidMount() {
         fetch('/api/vegetables')
             .then(response => {
@@ -27,15 +35,24 @@ class App extends Component {
         const listStyle = {
             listStyle: 'none',
             fontSize: '18px',
-            lineHeight: '1.8em',
-        }
+            lineHeight: '1.8 em',
+        };
+
         return this.state.vegs.map(vegs => {
             return (
+                <div>
+                    <li style={listStyle} onClick={
+                        () =>this.handleClick(vegs)} key={vegs.id} >
+                        { vegs.vegetable_name }
+                    </li>
+                    <button
+                        onClick={() => this.handleDelete(vegs.id)}
+                        className="btn btn-sm btn-danger "
+                    >
+                        Delete
+                    </button>
 
-                <li style={listStyle} onClick={
-                    () =>this.handleClick(vegs)} key={vegs.id} >
-                    { vegs.vegetable_name }
-                </li>
+                </div>
             );
         })
     }
@@ -73,7 +90,7 @@ class App extends Component {
         const mainDivStyle =  {
             display: "flex",
             flexDirection: "row"
-        }
+        };
 
         const divStyle = {
 
@@ -83,20 +100,25 @@ class App extends Component {
             padding: '20px 20px 20px 20px',
             margin: '20px 8px 10px 20px'
 
-        }
+        };
 
         return (
             <div>
                 <div style= {mainDivStyle}>
                     <div style={divStyle}>
-                        <h3> All Vegetables  </h3>
-                        <ul>
-                            { this.renderProducts() }
-                        </ul>
-
+                        <div className={"form-row"}>
+                            <h3> All Vegetables  </h3>
+                        </div>
+                        <div className={"form-row"}>
+                            <ul>
+                                { this.renderProducts() }
+                            </ul>
+                        </div>
                     </div>
-                    <Vegetable vegs={this.state.currentProduct} />
-                    {/*<Form onAdd={this.handleAddProduct} />*/}
+                    <div className="form-row">
+                        <Vegetable vegs={this.state.currentProduct} />
+                        <Form onAdd={this.handleAddProduct} />
+                    </div>
                 </div>
 
             </div>

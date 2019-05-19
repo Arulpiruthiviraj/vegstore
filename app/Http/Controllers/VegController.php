@@ -92,9 +92,9 @@ class VegController extends Controller
      * @param  \App\Veg  $veg
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Veg $veg)
+    public function destroy($id)
     {
-        $product = Veg::find($veg);
+        $product = Veg::find($id);
         $product->delete();
 
 

@@ -61651,10 +61651,24 @@ function (_Component) {
       currentProduct: null
     };
     _this.handleAddProduct = _this.handleAddProduct.bind(_assertThisInitialized(_this));
+    _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(App, [{
+    key: "handleDelete",
+    value: function handleDelete(id) {
+      var isNotId = function isNotId(vegs) {
+        return vegs.id !== id;
+      };
+
+      var updatedVegs = this.state.vegs.filter(isNotId);
+      this.setState({
+        vegs: updatedVegs
+      });
+      axios["delete"]("/api/vegetables/".concat(id));
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
@@ -61675,16 +61689,21 @@ function (_Component) {
       var listStyle = {
         listStyle: 'none',
         fontSize: '18px',
-        lineHeight: '1.8em'
+        lineHeight: '1.8 em'
       };
       return this.state.vegs.map(function (vegs) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           style: listStyle,
           onClick: function onClick() {
             return _this3.handleClick(vegs);
           },
           key: vegs.id
-        }, vegs.vegetable_name);
+        }, vegs.vegetable_name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          onClick: function onClick() {
+            return _this3.handleDelete(vegs.id);
+          },
+          className: "btn btn-sm btn-danger "
+        }, "Delete"));
       });
     }
   }, {
@@ -61738,7 +61757,17 @@ function (_Component) {
         style: mainDivStyle
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: divStyle
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " All Vegetables  "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.renderProducts()))));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " All Vegetables  ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.renderProducts()))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vegetables__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        vegs: this.state.currentProduct
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        onAdd: this.handleAddProduct
+      }))));
     }
   }]);
 

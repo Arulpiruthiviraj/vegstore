@@ -24,8 +24,8 @@ class VegRequest extends FormRequest
     public function rules()
     {
         return [
-            'vegetable' => 'required',
-            'price' => "required",
+            'vegetable_name' => 'required',
+            'vegetable_price' => "required",
         ];
     }
 }

@@ -24,18 +24,8 @@ class Form extends Component {
         this.setState({newData: state });
     }
     handleSubmit(e) {
-        e.preventDefault();
-        axios
-            .post('/api/vegetables',this.state.newData )
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    tasks: [response.data, ...this.state.newData]
-                });
-                this.setState({
-                    newData: {}
-                });
-            });
+        e.preventDefault()
+        this.props.onAdd(this.state.newData);
     }
     render() {
         return (

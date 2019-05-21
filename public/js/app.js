@@ -61719,16 +61719,15 @@ function (_Component) {
       var _this4 = this;
 
       vegs.price = Number(vegs.vegetable_price);
-      fetch('api/vegetables/', {
+      fetch('api/vegetables', {
         method: 'post',
-
-        /* headers are important*/
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(vegs)
       }).then(function (response) {
+        console.log(response);
         return response.json();
       }).then(function (data) {
         _this4.setState(function (prevState) {
@@ -61791,14 +61790,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -61856,25 +61847,13 @@ function (_Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
-      var _this2 = this;
-
       e.preventDefault();
-      axios.post('/api/vegetables', this.state.newData).then(function (response) {
-        console.log(response);
-
-        _this2.setState({
-          tasks: [response.data].concat(_toConsumableArray(_this2.state.newData))
-        });
-
-        _this2.setState({
-          newData: {}
-        });
-      });
+      this.props.onAdd(this.state.newData);
     }
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-10"
@@ -61894,7 +61873,7 @@ function (_Component) {
         id: "vegetable_name",
         placeholder: "Vegetable Name",
         onChange: function onChange(e) {
-          return _this3.handleInput('vegetable_name', e);
+          return _this2.handleInput('vegetable_name', e);
         }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-2"
@@ -61908,7 +61887,7 @@ function (_Component) {
         id: "vegetable_price",
         placeholder: "Price",
         onChange: function onChange(e) {
-          return _this3.handleInput('vegetable_price', e);
+          return _this2.handleInput('vegetable_price', e);
         }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-3"
@@ -61922,7 +61901,7 @@ function (_Component) {
         id: "vegetable_description",
         placeholder: "Description",
         onChange: function onChange(e) {
-          return _this3.handleInput('vegetable_description', e);
+          return _this2.handleInput('vegetable_description', e);
         }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-md-3"
@@ -61936,7 +61915,7 @@ function (_Component) {
         id: "vegetable_supplier",
         placeholder: "Vegetable Supplier",
         onChange: function onChange(e) {
-          return _this3.handleInput('vegetable_supplier', e);
+          return _this2.handleInput('vegetable_supplier', e);
         }
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-check"
@@ -61946,7 +61925,7 @@ function (_Component) {
         id: "stock_available",
         value: this.state.newData.stock_available.checked,
         onChange: function onChange(e) {
-          return _this3.handleInput('stock_available', e);
+          return _this2.handleInput('stock_available', e);
         }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "form-check-label",

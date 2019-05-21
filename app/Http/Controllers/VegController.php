@@ -35,10 +35,10 @@ class VegController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VegRequest $request)
     {
       $veg = Veg::create($request->all());
-      return response()->json('Vegetable Added to store Successfully.');
+      return response()->json([$veg,'Vegetable Added to store Successfully.']);
     }
 
     /**

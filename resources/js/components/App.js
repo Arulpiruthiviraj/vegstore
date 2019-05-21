@@ -62,18 +62,20 @@ class App extends Component {
     }
 
     handleAddProduct(vegs) {
+
         vegs.price = Number(vegs.vegetable_price);
-        fetch( 'api/vegetables/', {
+        fetch( 'api/vegetables', {
             method:'post',
-            /* headers are important*/
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
 
-            body: JSON.stringify(vegs)
+            body: JSON.stringify(vegs),
+
         })
             .then(response => {
+                console.log(response);
                 return response.json();
             })
             .then( data => {
